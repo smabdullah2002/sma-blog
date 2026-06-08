@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Post from "./pages/Post";
 import Archive from "./pages/Archive";
 import Tag from "./pages/Tag";
@@ -48,7 +47,6 @@ export default function App() {
               <PublicLayout>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
                   <Route path="/post/:slug" element={<Post />} />
                   <Route path="/archive" element={<Archive />} />
                   <Route path="/tag/:slug" element={<Tag />} />

@@ -57,7 +57,7 @@ export function DashboardProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated, addToast]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     loadPosts();

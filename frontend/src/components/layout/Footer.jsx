@@ -1,6 +1,35 @@
 import Container from "./Container";
 
+
+
 export default function Footer() {
+
+  const socialLinks = [
+    {
+      name: "Twitter",
+      url: "https://x.com/SheikhMuha23559",
+    },
+    {
+      name: "GitHub",
+      url: "https://github.com/smabdullah2002",
+    },
+    {
+      name: "Gmail",
+      url: "mailto:sheikhmuhammad2002@gmail.com",
+    },
+  ];
+
+  const sections = [
+    {
+      name: "Home",
+      url: "/",
+    
+    },
+    {
+      name: "Archive",
+      url: "/archive",
+    }
+  ];
   return (
     <footer>
       {/* Inverted Section */}
@@ -11,19 +40,17 @@ export default function Footer() {
               <h3 className="font-serif text-3xl font-black tracking-tighter mb-4">
                 SMA Blog
               </h3>
-              <p className="font-body text-sm text-neutral-400 leading-relaxed">
-                all models are wrong, but some are useful
-              </p>
+
             </div>
             <div className="md:col-span-2">
               <h4 className="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-400 mb-4">
                 Sections
               </h4>
               <ul className="space-y-2">
-                {["Home", "Archive", "About"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
-                      {item}
+                {sections.map((section) => (
+                  <li key={section.name}>
+                    <a href={section.url} className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
+                      {section.name}
                     </a>
                   </li>
                 ))}
@@ -34,10 +61,10 @@ export default function Footer() {
                 Connect
               </h4>
               <ul className="space-y-2">
-                {["Twitter", "GitHub", "RSS"].map((item) => (
-                  <li key={item}>
-                    <a href="#" className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
-                      {item}
+                {socialLinks.map((link) => (
+                  <li key={link.name}>
+                    <a href={link.url} className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
+                      {link.name}
                     </a>
                   </li>
                 ))}

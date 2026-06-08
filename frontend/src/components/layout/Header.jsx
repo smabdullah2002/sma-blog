@@ -61,9 +61,6 @@ export default function Header() {
               <Link to="/archive" className="font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:text-accent transition-colors duration-200">
                 Archive
               </Link>
-              <Link to="/about" className="font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:text-accent transition-colors duration-200">
-                About
-              </Link>
               {isAuthenticated ? (
                 <>
                   <Link
@@ -153,12 +150,6 @@ export default function Header() {
               className="w-full text-left px-4 py-3 font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:bg-neutral-100 transition-colors duration-200"
             >
               Archive
-            </button>
-            <button
-              onClick={() => handleNav("/about")}
-              className="w-full text-left px-4 py-3 font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:bg-neutral-100 transition-colors duration-200"
-            >
-              About
             </button>
 
             <div className="border-t border-ink my-3" />
