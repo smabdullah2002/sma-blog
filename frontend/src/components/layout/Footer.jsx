@@ -23,7 +23,6 @@ export default function Footer() {
     {
       name: "Home",
       url: "/",
-    
     },
     {
       name: "Archive",
