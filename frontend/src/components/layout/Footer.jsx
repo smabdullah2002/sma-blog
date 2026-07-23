@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Container from "./Container";
 
 
@@ -48,9 +49,9 @@ export default function Footer() {
               <ul className="space-y-2">
                 {sections.map((section) => (
                   <li key={section.name}>
-                    <a href={section.url} className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
+                    <Link to={section.url} className="font-sans text-sm text-bg hover:text-accent transition-colors duration-200">
                       {section.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

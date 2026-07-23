@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Container from "../components/layout/Container";
 import PostCard from "../components/post/PostCard";
 import SubscribeForm from "../components/newsletter/SubscribeForm";
@@ -148,12 +149,12 @@ export default function Home() {
                 <p className="font-body text-sm md:text-base text-neutral-600 leading-relaxed text-justify mb-4 max-w-2xl">
                   {featuredPost.excerpt}
                 </p>
-                <a
-                  href={`/post/${featuredPost.slug}`}
+                <Link
+                  to={`/post/${featuredPost.slug}`}
                   className="inline-block font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:text-accent transition-colors duration-200 underline underline-offset-4 decoration-2 decoration-accent"
                 >
                   Read Full Story &rarr;
-                </a>
+                </Link>
               </div>
 
               <div className="md:col-span-4 pl-0 md:pl-8">
@@ -173,13 +174,13 @@ export default function Home() {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {["Philosophy", "Mental Models", "Reasoning", "Psychology"].map((tag) => (
-                      <a
+                      <Link
                         key={tag}
-                        href={`/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                        to={`/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
                         className="font-sans text-xs uppercase tracking-widest font-semibold border border-ink px-3 py-1.5 hover:bg-ink hover:text-bg transition-colors duration-200"
                       >
                         {tag}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -192,13 +193,6 @@ export default function Home() {
               <h1 className="font-serif text-4xl md:text-5xl font-black tracking-tighter mb-4">
                 Welcome to SMA Blog<span className="text-accent">.</span>
               </h1>
-              <p className="font-body text-base text-neutral-600 max-w-lg mx-auto">
-                No featured story yet. Head to the{" "}
-                <a href="/dashboard" className="text-accent underline underline-offset-4 decoration-2">
-                  Writer&rsquo;s Desk
-                </a>{" "}
-                to publish your first essay.
-              </p>
             </div>
           )}
         </Container>

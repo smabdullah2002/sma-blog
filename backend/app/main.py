@@ -1,15 +1,21 @@
 from contextlib import asynccontextmanager
 
 from bson import ObjectId
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.encoders import ENCODERS_BY_TYPE
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
 from app.database.mongo import mongo
 from app.api.router import api_router
 
 ENCODERS_BY_TYPE[ObjectId] = str
+
+limiter = Limiter(key_func=get_remote_address)
 
 
 @asynccontextmanager
@@ -26,6 +32,16 @@ app = FastAPI(
     redirect_slashes=False,
 )
 
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Too many requests. Please try again later."},
+    )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins.split(","),
@@ -39,5 +55,4 @@ app.include_router(api_router)
 
 @app.get("/health")
 async def health():
-    databases = await mongo.client.list_database_names()
-    return {"status": "ok", "database": mongo.db.name, "databases": databases}
+    return {"status": "ok"}

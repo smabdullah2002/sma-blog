@@ -1,13 +1,20 @@
 import { useDashboard } from "../context/DashboardContext";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import StatCard from "../components/dashboard/StatCard";
 import PostTable from "../components/dashboard/PostTable";
 import { TableSkeleton } from "../components/ui/Skeleton";
+import Toast from "../components/ui/Toast";
 
 export default function PostsManager() {
   const { posts, publishedPosts, draftPosts, deletePost, loading } = useDashboard();
   const [filter, setFilter] = useState("all");
+  const [toast, setToast] = useState(null);
+
+  const handleDelete = useCallback(async (slug) => {
+    await deletePost(slug);
+    setToast("Essay deleted");
+  }, [deletePost]);
 
   const filteredPosts =
     filter === "published"
@@ -18,6 +25,7 @@ export default function PostsManager() {
 
   return (
     <DashboardLayout>
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
       <div className="p-6 md:p-8">
         <div className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-2">
           Content
@@ -59,7 +67,7 @@ export default function PostsManager() {
         </div>
 
         {/* Table */}
-        {loading ? <TableSkeleton rows={8} /> : <PostTable posts={filteredPosts} onDelete={deletePost} />}
+        {loading ? <TableSkeleton rows={8} /> : <PostTable posts={filteredPosts} onDelete={handleDelete} />}
       </div>
     </DashboardLayout>
   );

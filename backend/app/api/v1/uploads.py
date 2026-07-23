@@ -1,6 +1,8 @@
 import cloudinary
 import cloudinary.uploader
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, status
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
 from app.api.deps import get_current_admin
 from app.config import settings
@@ -13,10 +15,13 @@ cloudinary.config(
 )
 
 router = APIRouter(prefix="/uploads", tags=["uploads"])
+limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("/image")
+@limiter.limit("10/minute")
 async def upload_image(
+    request: Request,
     file: UploadFile = File(...),
     admin=Depends(get_current_admin),
 ):

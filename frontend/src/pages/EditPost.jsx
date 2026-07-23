@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDashboard } from "../context/DashboardContext";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import PostEditor from "../components/dashboard/PostEditor";
 import { EditorSkeleton } from "../components/ui/Skeleton";
+import Toast from "../components/ui/Toast";
 
 export default function EditPost() {
   const { slug } = useParams();
   const { getPost, updatePost, loading } = useDashboard();
   const post = getPost(slug);
+  const [toast, setToast] = useState(null);
 
   if (loading) {
     return (
@@ -33,12 +36,14 @@ export default function EditPost() {
     );
   }
 
-  const handleSave = (data) => {
-    updatePost(slug, data);
+  const handleSave = async (data) => {
+    await updatePost(slug, data);
+    setToast("Changes saved");
   };
 
   return (
     <DashboardLayout>
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
       <div className="flex flex-col h-full">
         <div className="p-6 pb-0">
           <div className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-2">

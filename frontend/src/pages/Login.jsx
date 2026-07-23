@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Container from "../components/layout/Container";
 
@@ -98,12 +98,12 @@ export default function Login() {
 
           {/* Footer */}
           <div className="text-center mt-6">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="font-sans text-[10px] uppercase tracking-widest font-semibold text-neutral-500 hover:text-accent transition-colors duration-200"
             >
               &larr; Back to Site
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

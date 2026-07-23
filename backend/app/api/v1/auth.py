@@ -1,13 +1,18 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Request, status
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
 from app.database.mongo import mongo
 from app.schemas.auth import LoginRequest, TokenResponse, RefreshRequest
 from app.core.security import verify_password, create_access_token, create_refresh_token, decode_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(body: LoginRequest):
+@limiter.limit("5/minute")
+async def login(request: Request, body: LoginRequest):
     user = await mongo.db.users.find_one({"email": body.email})
     if not user or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(
@@ -21,7 +26,8 @@ async def login(body: LoginRequest):
 
 
 @router.post("/refresh", response_model=TokenResponse)
-async def refresh(body: RefreshRequest):
+@limiter.limit("10/minute")
+async def refresh(request: Request, body: RefreshRequest):
     payload = decode_token(body.refresh_token)
     email = payload.get("sub")
     if not email or payload.get("type") != "refresh":

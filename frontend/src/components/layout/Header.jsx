@@ -61,7 +61,7 @@ export default function Header() {
               <Link to="/archive" className="font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:text-accent transition-colors duration-200">
                 Archive
               </Link>
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <>
                   <Link
                     to="/dashboard"
@@ -76,13 +76,6 @@ export default function Header() {
                     Sign Out
                   </button>
                 </>
-              ) : (
-                <Link
-                  to="/login"
-                  className="font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:text-accent transition-colors duration-200"
-                >
-                  Sign In
-                </Link>
               )}
               <button
                 onClick={() => setModalOpen(true)}
@@ -154,7 +147,7 @@ export default function Header() {
 
             <div className="border-t border-ink my-3" />
 
-            {isAuthenticated ? (
+            {isAuthenticated && (
               <>
                 <button
                   onClick={() => handleNav("/dashboard")}
@@ -169,13 +162,6 @@ export default function Header() {
                   Sign Out
                 </button>
               </>
-            ) : (
-              <button
-                onClick={() => handleNav("/login")}
-                className="w-full text-left px-4 py-3 font-sans text-xs uppercase tracking-widest font-semibold text-ink hover:bg-neutral-100 transition-colors duration-200"
-              >
-                Sign In
-              </button>
             )}
           </nav>
 

@@ -26,6 +26,7 @@ export default function PostEditor({ initial, onSave }) {
   const [uploading, setUploading] = useState(false);
   const [uploadingInline, setUploadingInline] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [saving, setSaving] = useState(false);
   const fileInputRef = useRef(null);
   const inlineInputRef = useRef(null);
   const textareaRef = useRef(null);
@@ -79,18 +80,23 @@ export default function PostEditor({ initial, onSave }) {
     }
   };
 
-  const handleSave = (publish) => {
-    onSave({
-      title,
-      subtitle,
-      slug: slug || makeSlug(title),
-      excerpt,
-      content,
-      coverImage,
-      coverCaption,
-      tags: tagsInput.split(",").map((t) => t.trim()).filter(Boolean),
-      status: publish ? "published" : "draft",
-    });
+  const handleSave = async (publish) => {
+    setSaving(true);
+    try {
+      await onSave({
+        title,
+        subtitle,
+        slug: slug || makeSlug(title),
+        excerpt,
+        content,
+        coverImage,
+        coverCaption,
+        tags: tagsInput.split(",").map((t) => t.trim()).filter(Boolean),
+        status: publish ? "published" : "draft",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -214,17 +220,17 @@ export default function PostEditor({ initial, onSave }) {
         <div className="pt-4 border-t border-ink space-y-3">
           <button
             onClick={() => handleSave(false)}
-            disabled={!title}
+            disabled={!title || saving}
             className="w-full py-3 font-sans text-xs uppercase tracking-widest font-semibold border border-ink bg-bg text-ink hover:bg-ink hover:text-bg transition-all duration-200 disabled:opacity-30 disabled:pointer-events-none"
           >
-            Save Draft
+            {saving ? "Saving..." : "Save Draft"}
           </button>
           <button
             onClick={() => handleSave(true)}
-            disabled={!title}
+            disabled={!title || saving}
             className="w-full py-3 font-sans text-xs uppercase tracking-widest font-semibold bg-ink text-bg hover:bg-white hover:text-ink hover:border hover:border-ink transition-all duration-200 disabled:opacity-30 disabled:pointer-events-none"
           >
-            Publish
+            {saving ? "Publishing..." : "Publish"}
           </button>
         </div>
       </div>

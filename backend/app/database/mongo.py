@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.config import settings
 
@@ -32,7 +34,7 @@ class MongoManager:
                 "password_hash": hash_password(settings.admin_password),
                 "name": "Admin",
                 "role": "admin",
-                "created_at": __import__("datetime").datetime.utcnow(),
+                "created_at": datetime.now(timezone.utc),
             })
 
 

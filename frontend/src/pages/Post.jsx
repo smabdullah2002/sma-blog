@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -11,6 +11,7 @@ export default function Post() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const firstPRef = useRef(true);
 
   useEffect(() => {
     async function load() {
@@ -62,10 +63,6 @@ export default function Post() {
       </section>
     );
   }
-
-  const paragraphs = post.content.split("\n\n");
-  const firstParagraph = paragraphs[0] || "";
-  const restContent = paragraphs.slice(1).join("\n\n");
 
   return (
     <article className="py-12 md:py-16">
@@ -122,20 +119,33 @@ export default function Post() {
             </figure>
           )}
 
+          {/* Separator before content */}
+          <div className="w-full h-1 bg-accent my-8" />
+
           {/* Article Body */}
           <div className="font-body text-base leading-relaxed text-justify text-neutral-700 space-y-5">
-            {/* First paragraph with drop cap */}
-            <p className="leading-relaxed">
-              <span className="float-left text-6xl sm:text-7xl leading-none mr-3 mt-1 text-accent font-serif">
-                {firstParagraph.charAt(0)}
-              </span>
-              {firstParagraph.slice(1)}
-            </p>
-
-            {/* Rest of content via react-markdown */}
             <Markdown
               remarkPlugins={[remarkGfm]}
               components={{
+                p: ({ children, ...props }) => {
+                  if (firstPRef.current) {
+                    firstPRef.current = false;
+                    const text = children?.toString() || "";
+                    return (
+                      <p className="leading-relaxed" {...props}>
+                        <span className="float-left text-6xl sm:text-7xl leading-none mr-3 mt-1 text-accent font-serif">
+                          {text.charAt(0)}
+                        </span>
+                        {text.slice(1)}
+                      </p>
+                    );
+                  }
+                  return (
+                    <p className="leading-relaxed text-justify" {...props}>
+                      {children}
+                    </p>
+                  );
+                },
                 h2: ({ children, ...props }) => (
                   <h2 className="font-serif text-2xl sm:text-3xl font-bold mt-10 mb-4 leading-tight" {...props}>
                     {children}
@@ -145,11 +155,6 @@ export default function Post() {
                   <h3 className="font-serif text-xl font-bold mt-8 mb-3 leading-tight" {...props}>
                     {children}
                   </h3>
-                ),
-                p: ({ children, ...props }) => (
-                  <p className="leading-relaxed text-justify" {...props}>
-                    {children}
-                  </p>
                 ),
                 blockquote: ({ children, ...props }) => (
                   <blockquote className="border-l-4 border-ink pl-4 my-6 font-serif text-base italic text-neutral-600" {...props}>
@@ -225,9 +230,25 @@ export default function Post() {
                 hr: () => (
                   <hr className="border-t border-muted my-8" />
                 ),
+                a: ({ children, href, ...props }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent underline underline-offset-4 decoration-2 hover:text-ink transition-colors duration-200"
+                    {...props}
+                  >
+                    {children}
+                  </a>
+                ),
+                del: ({ children, ...props }) => (
+                  <del className="line-through text-neutral-500" {...props}>
+                    {children}
+                  </del>
+                ),
               }}
             >
-              {restContent}
+              {post.content}
             </Markdown>
           </div>
 
