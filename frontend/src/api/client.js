@@ -13,7 +13,7 @@ client.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-});
+}); 
 
 client.interceptors.response.use(
   (res) => res,
