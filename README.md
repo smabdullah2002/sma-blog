@@ -2,6 +2,11 @@
 
 A digital publication built in the spirit of print journalism — stark geometry, high-contrast typography, and zero border radius.
 
+## Live
+
+- **Frontend:** https://smablog.netlify.app/
+- **Backend:** https://smablog.fastapicloud.dev/
+
 ## Stack
 
 | Layer | Technology |
