@@ -1,7 +1,11 @@
+import logging
+
 from fastapi import APIRouter, Depends
 from app.api.deps import get_current_admin
 from app.database.mongo import mongo
 from app.schemas.settings import SiteSettingsSchema, SiteSettingsUpdate
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -23,17 +27,24 @@ async def _get_settings():
 
 @router.get("")
 async def get_settings():
+    logger.debug("get_settings")
     return await _get_settings()
 
 
 @router.put("")
 async def update_settings(body: SiteSettingsUpdate, admin=Depends(get_current_admin)):
+    admin_email = admin.get("email", "unknown")
     update = {k: v for k, v in body.model_dump().items() if v is not None}
     if not update:
+        logger.debug("settings_update_noop", extra={"admin_email": admin_email})
         return await _get_settings()
     await mongo.db.settings.update_one(
         {"key": "site"},
         {"$set": update},
         upsert=True,
+    )
+    logger.info(
+        "settings_updated",
+        extra={"admin_email": admin_email, "fields": list(update.keys())},
     )
     return await _get_settings()

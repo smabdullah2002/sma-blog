@@ -1,3 +1,5 @@
+import logging
+
 import cloudinary
 import cloudinary.uploader
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, status
@@ -6,6 +8,8 @@ from slowapi.util import get_remote_address
 
 from app.api.deps import get_current_admin
 from app.config import settings
+
+logger = logging.getLogger(__name__)
 
 cloudinary.config(
     cloud_name=settings.cloudinary_cloud_name,
@@ -25,7 +29,25 @@ async def upload_image(
     file: UploadFile = File(...),
     admin=Depends(get_current_admin),
 ):
+    admin_email = admin.get("email", "unknown")
+    logger.info(
+        "upload_start",
+        extra={
+            "filename": file.filename,
+            "content_type": file.content_type,
+            "admin_email": admin_email,
+        },
+    )
     if not file.content_type or not file.content_type.startswith("image/"):
+        logger.warning(
+            "upload_rejected",
+            extra={
+                "reason": "invalid_content_type",
+                "content_type": file.content_type,
+                "filename": file.filename,
+                "admin_email": admin_email,
+            },
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Only image files are allowed",
@@ -39,6 +61,14 @@ async def upload_image(
                 {"quality": "auto", "fetch_format": "auto"},
             ],
         )
+        logger.info(
+            "upload_success",
+            extra={
+                "public_id": result["public_id"],
+                "url": result["secure_url"],
+                "admin_email": admin_email,
+            },
+        )
         return {
             "url": result["secure_url"],
             "public_id": result["public_id"],
@@ -46,6 +76,11 @@ async def upload_image(
             "height": result.get("height"),
         }
     except Exception as e:
+        logger.error(
+            "upload_error",
+            exc_info=True,
+            extra={"filename": file.filename, "admin_email": admin_email},
+        )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Upload failed: {str(e)}",
