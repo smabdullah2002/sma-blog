@@ -168,23 +168,6 @@ export default function Home() {
                   <SubscribeForm />
                 </div>
 
-                <div className="border-t border-ink pt-6">
-                  <h3 className="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-500 mb-3">
-                    Trending Topics
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {["Philosophy", "Mental Models", "Reasoning", "Psychology"].map((tag) => (
-                      <Link
-                        key={tag}
-                        to={`/tag/${tag.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="font-sans text-xs uppercase tracking-widest font-semibold border border-ink px-3 py-1.5 hover:bg-ink hover:text-bg transition-colors duration-200"
-                      >
-                        {tag}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
 
               </div>
             </div>
