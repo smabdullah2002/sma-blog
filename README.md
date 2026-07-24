@@ -63,6 +63,24 @@ npm install
 npm run dev
 ```
 
+## API Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/health` | Readiness check |
+| `POST` | `/api/v1/auth/login` | Admin login |
+| `POST` | `/api/v1/auth/refresh` | Refresh access token |
+| `GET` | `/api/v1/posts` | List posts |
+| `GET` | `/api/v1/posts/:slug` | Get post by slug |
+| `POST` | `/api/v1/posts` | Create post *(auth)* |
+| `PUT` | `/api/v1/posts/:slug` | Update post *(auth)* |
+| `DELETE` | `/api/v1/posts/:slug` | Delete post *(auth)* |
+| `GET` | `/api/v1/tags` | List tags |
+| `GET` | `/api/v1/settings` | Get homepage settings |
+| `PUT` | `/api/v1/settings` | Update settings *(auth)* |
+| `POST` | `/api/v1/uploads/image` | Upload image *(auth)* |
+| `POST` | `/api/v1/newsletter/subscribe` | Subscribe to newsletter |
+
 ## Project Structure
 
 ```
