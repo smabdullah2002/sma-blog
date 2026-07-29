@@ -33,7 +33,7 @@ async def upload_image(
     logger.info(
         "upload_start",
         extra={
-            "filename": file.filename,
+            "uploaded_filename": file.filename,
             "content_type": file.content_type,
             "admin_email": admin_email,
         },
@@ -44,7 +44,7 @@ async def upload_image(
             extra={
                 "reason": "invalid_content_type",
                 "content_type": file.content_type,
-                "filename": file.filename,
+                "uploaded_filename": file.filename,
                 "admin_email": admin_email,
             },
         )
@@ -79,9 +79,9 @@ async def upload_image(
         logger.error(
             "upload_error",
             exc_info=True,
-            extra={"filename": file.filename, "admin_email": admin_email},
+            extra={"uploaded_filename": file.filename, "admin_email": admin_email},
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Upload failed: {str(e)}",
+            detail="Upload failed. Please try again.",
         )
