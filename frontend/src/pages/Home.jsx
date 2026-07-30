@@ -185,9 +185,6 @@ export default function Home() {
       <Container>
         {loading || recentPosts.length > 0 ? (
           <>
-            <div className="py-10 text-center font-serif text-2xl text-neutral-400 tracking-[1em] select-none">
-              &#x2727; &#x2727; &#x2727;
-            </div>
             <section>
               <div className="mb-6">
                 <h2 className="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-500 mb-1">
@@ -210,9 +207,6 @@ export default function Home() {
                 </div>
               )}
             </section>
-            <div className="py-10 text-center font-serif text-2xl text-neutral-400 tracking-[1em] select-none">
-              &#x2727; &#x2727; &#x2727;
-            </div>
           </>
         ) : null}
       </Container>

@@ -270,11 +270,6 @@ export default function Post() {
             </div>
           </div>
 
-          {/* Ornamental Divider */}
-          <div className="py-12 text-center font-serif text-2xl text-neutral-400 tracking-[1em] select-none">
-            &#x2727; &#x2727; &#x2727;
-          </div>
-
           {/* Comments Placeholder */}
           <section>
             <h3 className="font-sans text-xs uppercase tracking-widest font-semibold text-neutral-500 mb-4">
