@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://3.109.157.65/api/v1";
+  import.meta.env.VITE_API_BASE_URL || "http://13.202.151.45/api/v1";
 
 const client = axios.create({
   baseURL: API_BASE,
