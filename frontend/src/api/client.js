@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const PRIMARY_API =
-  import.meta.env.VITE_API_BASE_URL || "http://13.202.151.45/api/v1";
+  import.meta.env.VITE_API_BASE_URL || "https://api.smabdullah.dev/api/v1";
 export const FALLBACK_API =
   import.meta.env.VITE_FALLBACK_API_BASE_URL ||
   "https://smablog.fastapicloud.dev/api/v1";
